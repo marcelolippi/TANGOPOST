@@ -24,7 +24,7 @@ if os.path.exists("logo.jpg"):
 else:
     logo_html = '<div class="logo-placeholder">LOGO MISSING</div>'
 
-# --- 2. CSS AVANZATO (GRID + FLEX ORDER) ---
+# --- 2. CSS AVANZATO (GRID + FLEX ORDER + SPACING) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -44,25 +44,25 @@ st.markdown("""
     } 
 
     /* --- LAYOUT GENERALE (DESKTOP) --- */
-    /* Usiamo Flexbox per creare le 3 colonne */
+    /* Flexbox per le 3 colonne desktop */
     .main-container {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        gap: 40px; /* Spazio orizzontale tra colonne */
+        gap: 40px; 
     }
 
-    /* Le colonne singole */
+    /* Wrapper delle colonne */
     .column-wrapper {
         display: flex;
         flex-direction: column;
-        width: 32%; /* 3 colonne uguali circa */
-        gap: 25px; /* Spazio verticale tra i box su Desktop */
+        width: 32%; 
+        gap: 25px; /* Spazio standard tra i box su Desktop */
     }
 
     /* Allineamento Logo nella Colonna 1 */
     .col-1-align {
-        align-items: flex-end; /* Logo a destra */
+        align-items: flex-end; 
     }
     
     .spacer-mid { height: 120px; display: block; }
@@ -115,7 +115,7 @@ st.markdown("""
 
     /* STILE LOGO */
     .logo-container {
-        width: 100%; display: flex; justify-content: flex-end; /* Allineato a destra */
+        width: 100%; display: flex; justify-content: flex-end; 
         margin-bottom: 15px;
     }
     .logo-img {
@@ -129,21 +129,18 @@ st.markdown("""
     /* --- MOBILE OPTIMIZATION (Android/iOS) --- */
     @media only screen and (max-width: 768px) {
         
-        /* 1. Cambia il contenitore principale in colonna unica */
         .main-container {
             display: flex;
             flex-direction: column;
-            gap: 25px; /* Spazio verticale uniforme tra TUTTI i box */
+            gap: 25px; /* Spazio standard tra i box su Mobile */
         }
 
-        /* 2. TRUCCO MAGICO: "Scompatta" le colonne desktop */
-        /* Questo comando fa sparire i div delle colonne ma mantiene il loro contenuto */
-        /* permettendo ai box di diventare fratelli diretti del main-container */
+        /* Scompatta le colonne desktop */
         .column-wrapper {
             display: contents;
         }
 
-        /* 3. ORDINA GLI ELEMENTI (1, 2, 3...) */
+        /* --- ORDINE MOBILE PERSONALIZZATO (1-7) --- */
         .mobile-order-logo { order: 0; }
         .mobile-order-1 { order: 1; }
         .mobile-order-2 { order: 2; }
@@ -153,10 +150,15 @@ st.markdown("""
         .mobile-order-6 { order: 6; }
         .mobile-order-7 { order: 7; }
 
-        /* 4. Nascondi lo spacer desktop */
+        /* --- SPAZIATURE EXTRA SU MOBILE --- */
+        /* Aggiunge margine extra SOTTO il blocco 2 e SOTTO il blocco 5 */
+        .mobile-gap-large {
+            margin-bottom: 50px !important; /* Spazio maggiore richiesto */
+        }
+
         .spacer-mid { display: none; }
 
-        /* 5. Aggiustamenti grafici Mobile */
+        /* Grafica Mobile */
         .big-number { font-size: 140px; bottom: -30px; right: -10px; }
         .tag-title { font-size: 22px; }
         
@@ -166,7 +168,6 @@ st.markdown("""
             min-height: 180px;
         }
 
-        /* Logo su mobile */
         .logo-container { justify-content: flex-end; margin-bottom: 10px; }
         .logo-img { width: 40%; }
     }
@@ -174,9 +175,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- 3. GENERAZIONE HTML DEI TAG ---
-def make_tag_html(number, title, desc, mobile_order_class):
+# Aggiunto parametro 'extra_class' per gestire gli spazi
+def make_tag_html(number, title, desc, mobile_order_class, extra_class=""):
     return f"""
-    <div class="tag-box {mobile_order_class}">
+    <div class="tag-box {mobile_order_class} {extra_class}">
         <div class="content-layer">
             <div class="status-dot"></div>
             <div class="tag-title">{title}</div>
@@ -188,34 +190,33 @@ def make_tag_html(number, title, desc, mobile_order_class):
 
 # --- 4. COSTRUZIONE LAYOUT ---
 
-# Definizione dei blocchi HTML
-# NOTA: mobile_order_X definisce l'ordine su Android
-
-# Tag 1 (Desktop: Col 2)
+# Tag 1: FREE DCP CHECK (Mobile: 1°)
 tag_1 = make_tag_html("1", "FREE DCP<br>CHECK", "Integrity & Hash verification.", "mobile-order-1")
 
-# Tag 2 (Desktop: Col 3)
-tag_2 = make_tag_html("2", "FREE<br>MASTERING", "Conforming & Technical Analysis.", "mobile-order-2")
+# Tag 2: FREE MASTERING (Mobile: 2°) -> HA SPAZIO EXTRA SOTTO
+tag_2 = make_tag_html("2", "FREE<br>MASTERING", "Conforming & Technical Analysis.", "mobile-order-2", "mobile-gap-large")
 
-# Tag 3 (Desktop: Col 1)
+# Tag 3: FREE IMF PACKAGING (Mobile: 3°)
 tag_3 = make_tag_html("3", "FREE IMF<br>PACKAGING", "Netflix / Amazon specs check.", "mobile-order-3")
 
-# Tag 4 (Desktop: Col 2)
+# Tag 4: COLOR SCIENCE (Mobile: 4°)
 tag_4 = make_tag_html("4", "COLOR<br>SCIENCE", "ACES Pipeline & SDR/HDR.", "mobile-order-4")
 
-# Tag 5 (Desktop: Col 3)
-tag_5 = make_tag_html("5", "QUICK QC<br>DIAGNOSTIC", "Cloud link or File upload check.", "mobile-order-5")
+# Tag 5: QUICK QC DIAGNOSTIC (Mobile: 5°) -> HA SPAZIO EXTRA SOTTO
+tag_5 = make_tag_html("5", "QUICK QC<br>DIAGNOSTIC", "Cloud link or File upload check.", "mobile-order-5", "mobile-gap-large")
 
-# Tag 6 - DISPLAY CALIBRATION (Desktop: Col 2) - SCAMBIATO
+# Tag 6: DISPLAY CALIBRATION (Mobile: 6°)
 tag_6 = make_tag_html("6", "DISPLAY<br>CALIBRATION", "Probe matching & 3D LUTs.", "mobile-order-6")
 
-# Tag 7 - CONTACT REQUEST (Desktop: Col 1) - SCAMBIATO
+# Tag 7: CONTACT REQUEST (Mobile: 7°)
 tag_7 = make_tag_html("7", "CONTACT<br>REQUEST", "Direct line to engineering.", "mobile-order-7")
 
 # Spacer (Desktop: Col 3)
 spacer = '<div class="spacer-mid"></div>'
 
 # HTML FINALE STRUTTURATO
+# Nota: La struttura HTML segue l'ordine delle colonne Desktop. 
+# L'ordine Mobile è gestito dalle classi CSS 'mobile-order-X'
 full_html = f"""
 <div class="main-container">
     
