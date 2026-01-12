@@ -16,28 +16,26 @@ def get_img_as_base64(file_path):
         data = f.read()
     return base64.b64encode(data).decode()
 
-# Tenta di caricare il logo se esiste
+# Generazione HTML del Logo
 logo_html = ""
 if os.path.exists("logo.jpg"):
     img_b64 = get_img_as_base64("logo.jpg")
-    # Logo ridotto (width: 55%) come richiesto
     logo_html = f'<img src="data:image/jpeg;base64,{img_b64}" class="logo-img">'
 else:
-    # Fallback
-    logo_html = '<div class="logo-placeholder">LOGO.JPG MISSING</div>'
+    logo_html = '<div class="logo-placeholder">LOGO MISSING</div>'
 
-# --- 2. CSS "MACRO TYPOGRAPHY" & LAYOUT ---
+# --- 2. CSS AVANZATO (GRID + FLEX ORDER) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
 
-    /* BACKGROUND - Antracite scuro */
+    /* BACKGROUND */
     .stApp {
         background-color: #1a1a1a;
         font-family: 'Inter', sans-serif;
     }
     
-    /* RESET STANDARD STREAMLIT */
+    /* NASCONDE HEADER/FOOTER STREAMLIT */
     header, footer { visibility: hidden; }
     .block-container { 
         padding-top: 2rem; 
@@ -45,34 +43,31 @@ st.markdown("""
         margin: 0 auto;
     } 
 
-    /* --- TITOLO E HEADER --- */
-    .header-wrapper {
-        width: 100%;
-        max-width: 350px; 
+    /* --- LAYOUT GENERALE (DESKTOP) --- */
+    /* Usiamo Flexbox per creare le 3 colonne */
+    .main-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 40px; /* Spazio orizzontale tra colonne */
+    }
+
+    /* Le colonne singole */
+    .column-wrapper {
         display: flex;
         flex-direction: column;
-        align-items: flex-end; /* Logo allineato a DESTRA */
+        width: 32%; /* 3 colonne uguali circa */
+        gap: 25px; /* Spazio verticale tra i box su Desktop */
     }
 
-    /* LOGO IMMAGINE */
-    .logo-img {
-        width: 55%;        
-        height: auto;
-        display: block;
-        margin-bottom: 15px; 
-        object-fit: contain;
+    /* Allineamento Logo nella Colonna 1 */
+    .col-1-align {
+        align-items: flex-end; /* Logo a destra */
     }
     
-    .logo-placeholder {
-        width: 55%; height: 80px; background: #333; color: #555; 
-        display: flex; align-items: center; justify-content: center; 
-        font-weight: 900; margin-bottom: 15px;
-    }
+    .spacer-mid { height: 120px; display: block; }
 
-    /* SPAZIATURA STANDARD VERTICALE */
-    .standard-gap { height: 40px; display: block; }
-
-    /* --- LA CASSA (TAG) --- */
+    /* --- STILE BOX (TAG) --- */
     .tag-box {
         background-color: #0a0a0a; 
         border: 1px solid #333;
@@ -84,7 +79,7 @@ st.markdown("""
         display: flex;
         flex-direction: column;
         padding: 25px;
-        margin-bottom: 25px;
+        box-sizing: border-box;
     }
 
     .tag-box:hover {
@@ -93,92 +88,95 @@ st.markdown("""
         transform: translateY(-5px);
     }
 
-    /* CONTENT LAYER */
     .content-layer {
-        position: relative;
-        z-index: 2; 
-        align-self: flex-start; 
-        width: 100%;
+        position: relative; z-index: 2; align-self: flex-start; width: 100%;
     }
 
     .status-dot {
-        height: 8px; width: 8px; 
-        background-color: #ff2a2a; 
-        border-radius: 50%; 
-        margin-bottom: 15px; 
-        display: block;
+        height: 8px; width: 8px; background-color: #ff2a2a; 
+        border-radius: 50%; margin-bottom: 15px; display: block;
     }
 
     .tag-title {
-        color: #ffffff;
-        font-size: 28px; 
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: -1px;
-        line-height: 0.95;
-        margin-bottom: 8px;
+        color: #ffffff; font-size: 28px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: -1px; line-height: 0.95; margin-bottom: 8px;
     }
 
     .tag-desc {
-        font-size: 12px;
-        color: #999;
-        font-weight: 400;
-        line-height: 1.2;
-        max-width: 80%; 
+        font-size: 12px; color: #999; font-weight: 400; line-height: 1.2; max-width: 80%;
     }
 
-    /* IL NUMERO (Basso Destra) */
     .big-number {
-        position: absolute;
-        bottom: -60px;      
-        right: -20px;       
-        font-size: 280px;   
-        font-weight: 900;
-        color: #1a1a1a;     
-        line-height: 1;
-        z-index: 1;
-        letter-spacing: -10px;
-        pointer-events: none;
-        text-align: right;  
+        position: absolute; bottom: -60px; right: -20px;       
+        font-size: 280px; font-weight: 900; color: #1a1a1a;     
+        line-height: 1; z-index: 1; letter-spacing: -10px;
+        pointer-events: none; text-align: right;  
     }
 
-    /* SPACER PER COLONNE (Desktop) */
-    .spacer-mid { height: 120px; display: block; }
+    /* STILE LOGO */
+    .logo-container {
+        width: 100%; display: flex; justify-content: flex-end; /* Allineato a destra */
+        margin-bottom: 15px;
+    }
+    .logo-img {
+        width: 55%; height: auto; object-fit: contain;
+    }
+    .logo-placeholder {
+        width: 55%; height: 80px; background: #333; color: #555; 
+        display: flex; align-items: center; justify-content: center; font-weight: 900;
+    }
 
-    /* --- MOBILE OPTIMIZATION (Schermi piccoli) --- */
+    /* --- MOBILE OPTIMIZATION (Android/iOS) --- */
     @media only screen and (max-width: 768px) {
         
-        /* Nasconde lo spacer che crea buchi inutili su mobile */
+        /* 1. Cambia il contenitore principale in colonna unica */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* Spazio verticale uniforme tra TUTTI i box */
+        }
+
+        /* 2. TRUCCO MAGICO: "Scompatta" le colonne desktop */
+        /* Questo comando fa sparire i div delle colonne ma mantiene il loro contenuto */
+        /* permettendo ai box di diventare fratelli diretti del main-container */
+        .column-wrapper {
+            display: contents;
+        }
+
+        /* 3. ORDINA GLI ELEMENTI (1, 2, 3...) */
+        .mobile-order-logo { order: 0; }
+        .mobile-order-1 { order: 1; }
+        .mobile-order-2 { order: 2; }
+        .mobile-order-3 { order: 3; }
+        .mobile-order-4 { order: 4; }
+        .mobile-order-5 { order: 5; }
+        .mobile-order-6 { order: 6; }
+        .mobile-order-7 { order: 7; }
+
+        /* 4. Nascondi lo spacer desktop */
         .spacer-mid { display: none; }
 
-        /* Riduce la dimensione dei numeri giganti */
-        .big-number {
-            font-size: 140px; 
-            bottom: -30px; 
-            right: -10px;
-        }
-
-        /* Riduce leggermente i titoli */
+        /* 5. Aggiustamenti grafici Mobile */
+        .big-number { font-size: 140px; bottom: -30px; right: -10px; }
         .tag-title { font-size: 22px; }
-
-        /* Aggiusta il logo su mobile */
-        .header-wrapper { align-items: flex-end; width: 100%; max-width: 100%; }
-        .logo-img { width: 40%; }
         
-        /* Rimuove aspect-ratio forzato per evitare quadrati enormi, meglio rettangoli su mobile */
         .tag-box {
+            width: 100%;
             aspect-ratio: auto;
-            min-height: 200px;
+            min-height: 180px;
         }
-    }
 
+        /* Logo su mobile */
+        .logo-container { justify-content: flex-end; margin-bottom: 10px; }
+        .logo-img { width: 40%; }
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# --- 3. FUNZIONE DRAW ---
-def draw_tag(number, title, desc):
+# --- 3. GENERAZIONE HTML DEI TAG ---
+def make_tag_html(number, title, desc, mobile_order_class):
     return f"""
-    <div class="tag-box">
+    <div class="tag-box {mobile_order_class}">
         <div class="content-layer">
             <div class="status-dot"></div>
             <div class="tag-title">{title}</div>
@@ -188,45 +186,59 @@ def draw_tag(number, title, desc):
     </div>
     """
 
-# --- 4. LAYOUT ---
-c1, c2, c3 = st.columns(3, gap="large")
+# --- 4. COSTRUZIONE LAYOUT ---
 
-# --- COLONNA 1 (SX) ---
-with c1:
-    # BLOCCO SOLO LOGO (Allineato a destra)
-    st.markdown(f"""
-    <div class="header-wrapper">
-        {logo_html}
+# Definizione dei blocchi HTML
+# NOTA: mobile_order_X definisce l'ordine su Android
+
+# Tag 1 (Desktop: Col 2)
+tag_1 = make_tag_html("1", "FREE DCP<br>CHECK", "Integrity & Hash verification.", "mobile-order-1")
+
+# Tag 2 (Desktop: Col 3)
+tag_2 = make_tag_html("2", "FREE<br>MASTERING", "Conforming & Technical Analysis.", "mobile-order-2")
+
+# Tag 3 (Desktop: Col 1)
+tag_3 = make_tag_html("3", "FREE IMF<br>PACKAGING", "Netflix / Amazon specs check.", "mobile-order-3")
+
+# Tag 4 (Desktop: Col 2)
+tag_4 = make_tag_html("4", "COLOR<br>SCIENCE", "ACES Pipeline & SDR/HDR.", "mobile-order-4")
+
+# Tag 5 (Desktop: Col 3)
+tag_5 = make_tag_html("5", "QUICK QC<br>DIAGNOSTIC", "Cloud link or File upload check.", "mobile-order-5")
+
+# Tag 6 - DISPLAY CALIBRATION (Desktop: Col 2) - SCAMBIATO
+tag_6 = make_tag_html("6", "DISPLAY<br>CALIBRATION", "Probe matching & 3D LUTs.", "mobile-order-6")
+
+# Tag 7 - CONTACT REQUEST (Desktop: Col 1) - SCAMBIATO
+tag_7 = make_tag_html("7", "CONTACT<br>REQUEST", "Direct line to engineering.", "mobile-order-7")
+
+# Spacer (Desktop: Col 3)
+spacer = '<div class="spacer-mid"></div>'
+
+# HTML FINALE STRUTTURATO
+full_html = f"""
+<div class="main-container">
+    
+    <div class="column-wrapper col-1-align">
+        <div class="logo-container mobile-order-logo">{logo_html}</div>
+        <div class="standard-gap"></div>
+        {tag_3}
+        {tag_7}
     </div>
-    <div class="standard-gap"></div>
-    """, unsafe_allow_html=True)
 
-    # TAG 3
-    st.markdown(draw_tag("3", "FREE IMF<br>PACKAGING", "Netflix / Amazon specs check."), unsafe_allow_html=True)
-    
-    # TAG 6
-    st.markdown(draw_tag("6", "CONTACT<br>REQUEST", "Direct line to engineering."), unsafe_allow_html=True)
+    <div class="column-wrapper">
+        {tag_1}
+        {tag_4}
+        {tag_6}
+    </div>
 
+    <div class="column-wrapper">
+        {spacer}
+        {tag_2}
+        {tag_5}
+    </div>
 
-# --- COLONNA 2 (CENTRO) ---
-with c2:
-    # TAG 1
-    st.markdown(draw_tag("1", "FREE DCP<br>CHECK", "Integrity & Hash verification."), unsafe_allow_html=True)
-    
-    # TAG 4
-    st.markdown(draw_tag("4", "COLOR<br>SCIENCE", "ACES Pipeline & SDR/HDR."), unsafe_allow_html=True)
-    
-    # TAG 7
-    st.markdown(draw_tag("7", "DISPLAY<br>CALIBRATION", "Probe matching & 3D LUTs."), unsafe_allow_html=True)
+</div>
+"""
 
-
-# --- COLONNA 3 (DX) ---
-with c3:
-    # Spacer (sparirà su mobile grazie al CSS)
-    st.markdown('<div class="spacer-mid"></div>', unsafe_allow_html=True)
-
-    # TAG 2
-    st.markdown(draw_tag("2", "FREE<br>MASTERING", "Conforming & Technical Analysis."), unsafe_allow_html=True)
-
-    # TAG 5
-    st.markdown(draw_tag("5", "QUICK QC<br>DIAGNOSTIC", "Cloud link or File upload check."), unsafe_allow_html=True)
+st.markdown(full_html, unsafe_allow_html=True)
