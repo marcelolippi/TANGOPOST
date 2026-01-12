@@ -45,17 +45,16 @@ st.markdown("""
         margin: 0 auto;
     } 
 
-    /* --- TITOLO E HEADER (COLONNA 1) --- */
-    
+    /* --- TITOLO E HEADER --- */
     .header-wrapper {
         width: 100%;
         max-width: 350px; 
         display: flex;
         flex-direction: column;
-        align-items: flex-end; /* MODIFICA: Allinea il logo a DESTRA */
+        align-items: flex-end; /* Logo allineato a DESTRA */
     }
 
-    /* 1. LOGO IMMAGINE - RIDOTTO */
+    /* LOGO IMMAGINE */
     .logo-img {
         width: 55%;        
         height: auto;
@@ -143,8 +142,35 @@ st.markdown("""
         text-align: right;  
     }
 
-    /* SPACER PER COLONNE */
-    .spacer-mid { height: 120px; }
+    /* SPACER PER COLONNE (Desktop) */
+    .spacer-mid { height: 120px; display: block; }
+
+    /* --- MOBILE OPTIMIZATION (Schermi piccoli) --- */
+    @media only screen and (max-width: 768px) {
+        
+        /* Nasconde lo spacer che crea buchi inutili su mobile */
+        .spacer-mid { display: none; }
+
+        /* Riduce la dimensione dei numeri giganti */
+        .big-number {
+            font-size: 140px; 
+            bottom: -30px; 
+            right: -10px;
+        }
+
+        /* Riduce leggermente i titoli */
+        .tag-title { font-size: 22px; }
+
+        /* Aggiusta il logo su mobile */
+        .header-wrapper { align-items: flex-end; width: 100%; max-width: 100%; }
+        .logo-img { width: 40%; }
+        
+        /* Rimuove aspect-ratio forzato per evitare quadrati enormi, meglio rettangoli su mobile */
+        .tag-box {
+            aspect-ratio: auto;
+            min-height: 200px;
+        }
+    }
 
     </style>
 """, unsafe_allow_html=True)
@@ -167,7 +193,7 @@ c1, c2, c3 = st.columns(3, gap="large")
 
 # --- COLONNA 1 (SX) ---
 with c1:
-    # BLOCCO SOLO LOGO (Allineato a destra via CSS)
+    # BLOCCO SOLO LOGO (Allineato a destra)
     st.markdown(f"""
     <div class="header-wrapper">
         {logo_html}
@@ -175,32 +201,32 @@ with c1:
     <div class="standard-gap"></div>
     """, unsafe_allow_html=True)
 
-    # TAG 3 (Spostato qui al posto dell'1)
+    # TAG 3
     st.markdown(draw_tag("3", "FREE IMF<br>PACKAGING", "Netflix / Amazon specs check."), unsafe_allow_html=True)
     
-    # TAG 6 (Spostato qui al posto del 4)
+    # TAG 6
     st.markdown(draw_tag("6", "CONTACT<br>REQUEST", "Direct line to engineering."), unsafe_allow_html=True)
 
 
 # --- COLONNA 2 (CENTRO) ---
 with c2:
-    # TAG 1 (Spostato qui al posto del 2)
+    # TAG 1
     st.markdown(draw_tag("1", "FREE DCP<br>CHECK", "Integrity & Hash verification."), unsafe_allow_html=True)
     
-    # TAG 4 (Spostato qui al posto del 5)
+    # TAG 4
     st.markdown(draw_tag("4", "COLOR<br>SCIENCE", "ACES Pipeline & SDR/HDR."), unsafe_allow_html=True)
     
-    # TAG 7 (Resta qui)
+    # TAG 7
     st.markdown(draw_tag("7", "DISPLAY<br>CALIBRATION", "Probe matching & 3D LUTs."), unsafe_allow_html=True)
 
 
 # --- COLONNA 3 (DX) ---
 with c3:
-    # Spacer
+    # Spacer (sparirà su mobile grazie al CSS)
     st.markdown('<div class="spacer-mid"></div>', unsafe_allow_html=True)
 
-    # TAG 2 (Spostato qui al posto del 3)
+    # TAG 2
     st.markdown(draw_tag("2", "FREE<br>MASTERING", "Conforming & Technical Analysis."), unsafe_allow_html=True)
 
-    # TAG 5 (Spostato qui al posto del 6)
+    # TAG 5
     st.markdown(draw_tag("5", "QUICK QC<br>DIAGNOSTIC", "Cloud link or File upload check."), unsafe_allow_html=True)
