@@ -52,7 +52,7 @@ st.markdown("""
         max-width: 350px; 
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-end; /* MODIFICA: Allinea il logo a DESTRA */
     }
 
     /* 1. LOGO IMMAGINE - RIDOTTO */
@@ -68,31 +68,6 @@ st.markdown("""
         width: 55%; height: 80px; background: #333; color: #555; 
         display: flex; align-items: center; justify-content: center; 
         font-weight: 900; margin-bottom: 15px;
-    }
-
-    /* 2. SIGNAL / QC */
-    .signal-text {
-        font-weight: 900; 
-        font-size: 38px;   
-        color: #e0e0e0; 
-        line-height: 0.9; 
-        letter-spacing: -1px;
-        width: 100%;
-        margin-bottom: 40px; 
-    }
-    
-    .qc-red { color: #ff2a2a; }
-
-    /* 3. TECHNICAL FACILITY */
-    .tech-sub {
-        font-size: 13px; 
-        color: #999; 
-        font-weight: 600; 
-        text-transform: uppercase;
-        width: 100%;
-        letter-spacing: 3.5px; 
-        border-top: 1px solid #333; 
-        padding-top: 10px;
     }
 
     /* SPAZIATURA STANDARD VERTICALE */
@@ -192,32 +167,30 @@ c1, c2, c3 = st.columns(3, gap="large")
 
 # --- COLONNA 1 (SX) ---
 with c1:
-    # BLOCCO TITOLO UNICO
+    # BLOCCO SOLO LOGO (Allineato a destra via CSS)
     st.markdown(f"""
     <div class="header-wrapper">
         {logo_html}
-        <div class="signal-text">SIGNAL \\ <span class="qc-red">QC</span></div>
-        <div class="tech-sub">Technical facility</div>
     </div>
     <div class="standard-gap"></div>
     """, unsafe_allow_html=True)
 
-    # TAG 1
-    st.markdown(draw_tag("1", "FREE DCP<br>CHECK", "Integrity & Hash verification."), unsafe_allow_html=True)
+    # TAG 3 (Spostato qui al posto dell'1)
+    st.markdown(draw_tag("3", "FREE IMF<br>PACKAGING", "Netflix / Amazon specs check."), unsafe_allow_html=True)
     
-    # TAG 4
-    st.markdown(draw_tag("4", "COLOR<br>SCIENCE", "ACES Pipeline & SDR/HDR."), unsafe_allow_html=True)
+    # TAG 6 (Spostato qui al posto del 4)
+    st.markdown(draw_tag("6", "CONTACT<br>REQUEST", "Direct line to engineering."), unsafe_allow_html=True)
 
 
 # --- COLONNA 2 (CENTRO) ---
 with c2:
-    # TAG 2
-    st.markdown(draw_tag("2", "FREE<br>MASTERING", "Conforming & Technical Analysis."), unsafe_allow_html=True)
+    # TAG 1 (Spostato qui al posto del 2)
+    st.markdown(draw_tag("1", "FREE DCP<br>CHECK", "Integrity & Hash verification."), unsafe_allow_html=True)
     
-    # TAG 5
-    st.markdown(draw_tag("5", "QUICK QC<br>DIAGNOSTIC", "Cloud link or File upload check."), unsafe_allow_html=True)
+    # TAG 4 (Spostato qui al posto del 5)
+    st.markdown(draw_tag("4", "COLOR<br>SCIENCE", "ACES Pipeline & SDR/HDR."), unsafe_allow_html=True)
     
-    # TAG 7 (NUOVO) - Inserito qui per bilanciare la colonna centrale
+    # TAG 7 (Resta qui)
     st.markdown(draw_tag("7", "DISPLAY<br>CALIBRATION", "Probe matching & 3D LUTs."), unsafe_allow_html=True)
 
 
@@ -226,8 +199,8 @@ with c3:
     # Spacer
     st.markdown('<div class="spacer-mid"></div>', unsafe_allow_html=True)
 
-    # TAG 3
-    st.markdown(draw_tag("3", "FREE IMF<br>PACKAGING", "Netflix / Amazon specs check."), unsafe_allow_html=True)
+    # TAG 2 (Spostato qui al posto del 3)
+    st.markdown(draw_tag("2", "FREE<br>MASTERING", "Conforming & Technical Analysis."), unsafe_allow_html=True)
 
-    # TAG 6
-    st.markdown(draw_tag("6", "CONTACT<br>REQUEST", "Direct line to engineering."), unsafe_allow_html=True)
+    # TAG 5 (Spostato qui al posto del 6)
+    st.markdown(draw_tag("5", "QUICK QC<br>DIAGNOSTIC", "Cloud link or File upload check."), unsafe_allow_html=True)
