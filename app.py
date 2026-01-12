@@ -213,28 +213,29 @@ tag_7 = make_tag_html("7", "CONTACT<br>REQUEST", "Direct line to engineering.", 
 spacer = '<div class="spacer-mid"></div>'
 
 # HTML FINALE STRUTTURATO
-# Nota: Nessuna indentazione a sinistra per evitare che venga letto come codice
+# Nota bene: tutto il codice HTML qui sotto è incollato a sinistra
+# per evitare che venga letto come codice da visualizzare.
 full_html = f"""
 <div class="main-container">
     
-    <div class="column-wrapper col-1-align">
-        <div class="logo-container mobile-order-logo">{logo_html}</div>
-        <div class="standard-gap"></div>
-        {tag_3}
-        {tag_7}
-    </div>
+<div class="column-wrapper col-1-align">
+<div class="logo-container mobile-order-logo">{logo_html}</div>
+<div class="standard-gap"></div>
+{tag_3}
+{tag_7}
+</div>
 
-    <div class="column-wrapper">
-        {tag_1}
-        {tag_4}
-        {tag_6}
-    </div>
+<div class="column-wrapper">
+{tag_1}
+{tag_4}
+{tag_6}
+</div>
 
-    <div class="column-wrapper">
-        {spacer}
-        {tag_2}
-        {tag_5}
-    </div>
+<div class="column-wrapper">
+{spacer}
+{tag_2}
+{tag_5}
+</div>
 
 </div>
 """
