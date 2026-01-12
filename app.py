@@ -151,9 +151,8 @@ st.markdown("""
         .mobile-order-7 { order: 7; }
 
         /* --- SPAZIATURE EXTRA SU MOBILE --- */
-        /* Aggiunge margine extra SOTTO il blocco 2 e SOTTO il blocco 5 */
         .mobile-gap-large {
-            margin-bottom: 50px !important; /* Spazio maggiore richiesto */
+            margin-bottom: 50px !important; 
         }
 
         .spacer-mid { display: none; }
@@ -175,7 +174,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- 3. GENERAZIONE HTML DEI TAG ---
-# Aggiunto parametro 'extra_class' per gestire gli spazi
 def make_tag_html(number, title, desc, mobile_order_class, extra_class=""):
     return f"""
     <div class="tag-box {mobile_order_class} {extra_class}">
@@ -215,8 +213,7 @@ tag_7 = make_tag_html("7", "CONTACT<br>REQUEST", "Direct line to engineering.", 
 spacer = '<div class="spacer-mid"></div>'
 
 # HTML FINALE STRUTTURATO
-# Nota: La struttura HTML segue l'ordine delle colonne Desktop. 
-# L'ordine Mobile è gestito dalle classi CSS 'mobile-order-X'
+# Nota: Nessuna indentazione a sinistra per evitare che venga letto come codice
 full_html = f"""
 <div class="main-container">
     
