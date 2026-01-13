@@ -73,11 +73,9 @@ header, footer { visibility: hidden; }
     .mobile-order-6 { order: 6; }
     .mobile-order-7 { order: 7; }
 
-    .mobile-gap-large { margin-bottom: 50px !important; }
     .spacer-mid { display: none; }
     
-    /* SU MOBILE: Mantieni quadrato anche qui per coerenza, o rimuovi aspect-ratio se preferisci rettangoli */
-    /* Qui lascio aspect-ratio forzato per avere quadrati ovunque come richiesto */
+    /* SU MOBILE: Mantieni quadrato anche qui per coerenza */
     .big-number { font-size: 140px; bottom: -30px; right: -10px; }
     .tag-title { font-size: 22px; }
     .tag-box { width: 100%; min-height: 0; }
@@ -93,11 +91,12 @@ def make_tag_html(number, title, desc, mobile_order_class, extra_class=""):
     return f'<div class="tag-box {mobile_order_class} {extra_class}"><div class="content-layer"><div class="status-dot"></div><div class="tag-title">{title}</div><div class="tag-desc">{desc}</div></div><div class="big-number">{number}</div></div>'
 
 # --- 4. COSTRUZIONE LAYOUT ---
+# Nota: Ho rimosso "mobile-gap-large" da tag_2 e tag_5 per avere spazi uniformi
 tag_1 = make_tag_html("1", "FREE DCP<br>CHECK", "Integrity & Hash verification.", "mobile-order-1")
-tag_2 = make_tag_html("2", "FREE<br>MASTERING", "Conforming & Technical Analysis.", "mobile-order-2", "mobile-gap-large")
+tag_2 = make_tag_html("2", "FREE<br>MASTERING", "Conforming & Technical Analysis.", "mobile-order-2")
 tag_3 = make_tag_html("3", "FREE IMF<br>PACKAGING", "Netflix / Amazon specs check.", "mobile-order-3")
 tag_4 = make_tag_html("4", "COLOR<br>SCIENCE", "ACES Pipeline & SDR/HDR.", "mobile-order-4")
-tag_5 = make_tag_html("5", "QUICK QC<br>DIAGNOSTIC", "Cloud link or File upload check.", "mobile-order-5", "mobile-gap-large")
+tag_5 = make_tag_html("5", "QUICK QC<br>DIAGNOSTIC", "Cloud link or File upload check.", "mobile-order-5")
 tag_6 = make_tag_html("6", "DISPLAY<br>CALIBRATION", "Probe matching & 3D LUTs.", "mobile-order-6")
 tag_7 = make_tag_html("7", "CONTACT<br>REQUEST", "Direct line to engineering.", "mobile-order-7")
 spacer = '<div class="spacer-mid"></div>'
