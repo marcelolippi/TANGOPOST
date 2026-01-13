@@ -36,11 +36,14 @@ header, footer { visibility: hidden; }
 .main-container { display: flex; flex-direction: row; justify-content: space-between; gap: 40px; }
 .column-wrapper { display: flex; flex-direction: column; width: 32%; gap: 25px; }
 .col-1-align { align-items: flex-end; }
-.spacer-mid { height: 120px; display: block; }
+.spacer-mid { height: 120px; display: block; flex-shrink: 0; }
 
-/* TAG BOX STYLE */
+/* TAG BOX STYLE - FORZA SEMPRE IL QUADRATO */
 .tag-box {
-    background-color: #0a0a0a; border: 1px solid #333; aspect-ratio: 1 / 1; 
+    background-color: #0a0a0a; border: 1px solid #333; 
+    aspect-ratio: 1 / 1 !important; /* FORZA QUADRATO PERFETTO SEMPRE */
+    width: 100%; /* Si adatta alla larghezza della colonna */
+    flex-shrink: 0; /* Impedisce che il box venga schiacciato */
     position: relative; overflow: hidden; transition: all 0.3s ease;
     cursor: pointer; display: flex; flex-direction: column; padding: 25px; box-sizing: border-box;
 }
@@ -72,9 +75,12 @@ header, footer { visibility: hidden; }
 
     .mobile-gap-large { margin-bottom: 50px !important; }
     .spacer-mid { display: none; }
+    
+    /* SU MOBILE: Mantieni quadrato anche qui per coerenza, o rimuovi aspect-ratio se preferisci rettangoli */
+    /* Qui lascio aspect-ratio forzato per avere quadrati ovunque come richiesto */
     .big-number { font-size: 140px; bottom: -30px; right: -10px; }
     .tag-title { font-size: 22px; }
-    .tag-box { width: 100%; aspect-ratio: auto; min-height: 180px; }
+    .tag-box { width: 100%; min-height: 0; }
     .logo-container { justify-content: flex-end; margin-bottom: 10px; }
     .logo-img { width: 40%; }
 }
@@ -82,7 +88,7 @@ header, footer { visibility: hidden; }
 """, unsafe_allow_html=True)
 
 # --- 3. GENERAZIONE HTML DEI TAG ---
-# Modificato per essere su una riga sola ed evitare errori di spazi
+# Scritto su una riga unica per evitare errori di formattazione
 def make_tag_html(number, title, desc, mobile_order_class, extra_class=""):
     return f'<div class="tag-box {mobile_order_class} {extra_class}"><div class="content-layer"><div class="status-dot"></div><div class="tag-title">{title}</div><div class="tag-desc">{desc}</div></div><div class="big-number">{number}</div></div>'
 
@@ -96,7 +102,7 @@ tag_6 = make_tag_html("6", "DISPLAY<br>CALIBRATION", "Probe matching & 3D LUTs."
 tag_7 = make_tag_html("7", "CONTACT<br>REQUEST", "Direct line to engineering.", "mobile-order-7")
 spacer = '<div class="spacer-mid"></div>'
 
-# HTML FINALE - Tutto su una riga per evitare errori di copia/incolla
+# HTML FINALE - Tutto su una riga per sicurezza
 full_html = f'<div class="main-container"><div class="column-wrapper col-1-align"><div class="logo-container mobile-order-logo">{logo_html}</div><div class="standard-gap"></div>{tag_3}{tag_7}</div><div class="column-wrapper">{tag_1}{tag_4}{tag_6}</div><div class="column-wrapper">{spacer}{tag_2}{tag_5}</div></div>'
 
 st.markdown(full_html, unsafe_allow_html=True)
